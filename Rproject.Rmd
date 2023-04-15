@@ -1,0 +1,184 @@
+---
+title: "R Project"
+author: "Sai Sasank Kothuru & Saikrishna Battula"
+date: "2023-04-13"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+Clinical_Data<- read.csv("Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020.csv")
+View(Clinical_Data)
+```
+
+```{r}
+head(Clinical_Data)
+```
+
+```{r}
+
+#installing required packages
+#install.packages("ggplot2")
+#install.packages("dplyr")
+#install.packages("plyr")
+#install.packages("tidyr")
+#install.packages("ggplot")
+#install.packages("ggplot2")
+#library(ggplot2)
+
+library(dplyr)
+library(plyr)
+library(tidyr)
+library(ggplot2)
+
+```
+
+
+```{r}
+
+#data cleaning and pre processing
+
+#checking null values
+
+Clinical_Data1<- data.frame(Clinical_Data)
+colSums(is.na(Clinical_Data1))
+```
+
+
+```{r}
+
+#Elemenating null values
+
+Clinical_Data1<-na.omit(Clinical_Data1)
+
+#rechecking null values
+colSums(is.na(Clinical_Data1))
+View(Clinical_Data1)
+head(Clinical_Data1)
+```
+
+```{r}
+#summary of the data
+
+summary(Clinical_Data1)
+
+```
+
+```{r}
+#number of people diagnosed at different ages
+
+age <-table(Clinical_Data1$age_at_diagnosis)
+
+age
+
+```
+
+```{r}
+#total number of females and males
+
+gender<-table(Clinical_Data1$biological_sex)
+
+gender
+
+```
+```{r}
+#number of performance status 0,1,2
+
+performance_status<-table(Clinical_Data1$performance_status_ecog)
+
+performance_status
+```
+
+```{r}
+#number of ph status
+
+ph_status<-table(Clinical_Data1$overall_hpv_p16_status)
+
+ph_status
+```
+```{r}
+#number of tumor locations
+
+tumor<-table(Clinical_Data1$index_tumour_location)
+tumor
+
+```
+
+```{r}
+#Types and count of chemotherapy
+
+chemotherapy<-data.frame(table(Clinical_Data1$chemotherapy_given))
+chemotherapy
+
+```
+
+```{r}
+#number of cancer surgery performed
+
+cancer_surgery<-data.frame(table(Clinical_Data1$cancer_surgery_performed))
+cancer_surgery
+```
+
+```{r}
+#stages of ajcc
+
+ajcc<-table(Clinical_Data1$ajcc_stage)
+ajcc
+
+```
+
+
+```{r}
+#data vizualization
+#barplot for number of people with same age 
+
+barplot(age, main = "Age distribution", xlab = "Age", ylab = "Frequency")
+
+
+```
+
+```{r}
+#62-male, 16- female
+pie(gender,labels = gender, main = "Gender distribution")
+
+```
+
+
+
+```{r}
+#
+
+barplot(ajcc, main = "AJCC staging", xlab = "Stage", ylab = "Frequency", names.arg = ajcc, col = "purple")
+
+
+```
+
+```{r}
+#age,tumor
+
+ggplot(Clinical_Data1, aes(x = age_at_diagnosis, y = index_tumour_location)) +
+  geom_boxplot(fill = "orange") +
+  labs(x = "age", y = "tumor") +
+  ggtitle("Highest Number of People for Tumor")
+
+
+```
+
+```{r}
+#yes-treatment- success
+
+#cancer_surgery
+#chemotherapy
+ggplot(Clinical_Data1, aes(x = cancer_surgery_performed, y = event_overall_survival)) +
+  geom_boxplot(fill = "blue") +
+  labs(x = "Cancer Surgery Performed", y = "event_overall_survival") +
+  ggtitle("Highest Number of People for Tumor")
+
+table(Clinical_Data1$event_overall_survival)
+
+```
