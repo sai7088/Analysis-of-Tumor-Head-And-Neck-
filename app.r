@@ -26,7 +26,7 @@ ui <- fluidPage(
 server <- function(input, output) {
   
   # Load data
-  Clinical_Data1 <- read.csv("path/to/datafile.csv")
+  Clinical_Data1 <- read.csv("Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020.csv")
   
   # Age distribution plot
   output$age_plot <- renderPlot({
